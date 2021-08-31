@@ -1,33 +1,116 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, Image, View, ScrollView} from 'react-native';
 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import * as ImagePicker from 'react-native-image-picker';
+
+import {DemoButton} from './demo-button';
+import {DemoTitle} from './demo-title';
+import {DemoResponse} from './demo-response';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [response, setResponse] = React.useState(null);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const onButtonPress = React.useCallback((type, options) => {
+    if (type === 'capture') {
+      ImagePicker.launchCamera(options, setResponse);
+    } else {
+      ImagePicker.launchImageLibrary(options, setResponse);
+    }
+  }, []);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView style={styles.container}>
+      <DemoTitle>🌄 React Native Image Picker</DemoTitle>
+      <ScrollView>
+        <View style={styles.buttonContainer}>
+          {actions.map(({title, type, options}) => {
+            return (
+              <DemoButton
+                key={title}
+                onPress={() => onButtonPress(type, options)}>
+                {title}
+              </DemoButton>
+            );
+          })}
+        </View>
+        <DemoResponse>{response}</DemoResponse>
+
+        {response?.assets &&
+          response?.assets.map(({uri}) => (
+            <View key={uri} style={styles.image}>
+              <Image
+                resizeMode="cover"
+                resizeMethod="scale"
+                style={{width: 200, height: 200}}
+                source={{uri: uri}}
+              />
+            </View>
+          ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
+const actions = [
+  {
+    title: 'Take Image',
+    type: 'capture',
+    options: {
+      saveToPhotos: true,
+      mediaType: 'photo',
+      includeBase64: false,
+    },
+  },
+  {
+    title: 'Select Image',
+    type: 'library',
+    options: {
+      maxHeight: 200,
+      maxWidth: 200,
+      selectionLimit: 0,
+      mediaType: 'photo',
+      includeBase64: false,
+    },
+  },
+  {
+    title: 'Take Video',
+    type: 'capture',
+    options: {
+      saveToPhotos: true,
+      mediaType: 'video',
+    },
+  },
+  {
+    title: 'Select Video',
+    type: 'library',
+    options: {
+      selectionLimit: 0,
+      mediaType: 'video',
+    },
+  },
+  {
+    title: `Select Image or Video\n(mixed)`,
+    type: 'library',
+    options: {
+      selectionLimit: 0,
+      mediaType: 'mixed',
+    },
+  },
+];
+
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: 'aliceblue',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 8,
+  },
+  image: {
+    marginVertical: 24,
+    alignItems: 'center',
   },
 });
 
