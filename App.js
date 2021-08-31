@@ -1,11 +1,15 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Image, View, ScrollView} from 'react-native';
-
+import {
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  View,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 
-import {DemoButton} from './demo-button';
-import {DemoTitle} from './demo-title';
-import {DemoResponse} from './demo-response';
+import { images } from './assets';
 
 function App() {
   const [response, setResponse] = React.useState(null);
@@ -19,35 +23,19 @@ function App() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <DemoTitle>🌄 React Native Image Picker</DemoTitle>
-      <ScrollView>
-        <View style={styles.buttonContainer}>
-          {actions.map(({title, type, options}) => {
-            return (
-              <DemoButton
-                key={title}
-                onPress={() => onButtonPress(type, options)}>
-                {title}
-              </DemoButton>
-            );
-          })}
+    <View style={styles.screen}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.topBar}>
+          <Text style={styles.topBarTitleText}>Avatar Picker</Text>
         </View>
-        <DemoResponse>{response}</DemoResponse>
-
-        {response?.assets &&
-          response?.assets.map(({uri}) => (
-            <View key={uri} style={styles.image}>
-              <Image
-                resizeMode="cover"
-                resizeMethod="scale"
-                style={{width: 200, height: 200}}
-                source={{uri: uri}}
-              />
-            </View>
-          ))}
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+      <View style={styles.avatar}>
+        <Image style={styles.avatarImage} source={images.avatar} />
+        <TouchableOpacity style={styles.addButton}>
+          <Image style={styles.addButtonIcon} source={images.addButton} />
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
@@ -99,18 +87,43 @@ const actions = [
 ];
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    backgroundColor: 'aliceblue',
+    backgroundColor: '#f2f2fC',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginVertical: 8,
+  safeArea: {
+    backgroundColor: '#62d1bc',
   },
-  image: {
-    marginVertical: 24,
+  topBar: {
+    height: 50,
+    backgroundColor: '#62d1bc',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  topBarTitleText: {
+    color: '#ffffff',
+    fontSize: 20,
+  },
+  avatar: {
+    alignItems: 'center',
+    marginTop: '32%',
+  },
+  avatarImage: {
+    height: 260,
+    width: 260,
+  },
+  addButton: {
+    height: 54,
+    width: 54,
+    backgroundColor: '#f2f2fC',
+    borderRadius: 50,
+    position: 'absolute',
+    right: 104,
+    bottom: 16,
+  },
+  addButtonIcon: {
+    height: 54,
+    width: 54,
   },
 });
 
