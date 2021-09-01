@@ -1,13 +1,13 @@
-import React, {useState, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 
-import {ImagePickerHeader} from './components/image-picker-header';
-import {ImagePickerModal} from './components/image-picker-modal';
-import {ImagePickerAvatar} from './components/image-picker-avatar';
+import { ImagePickerHeader } from './components/image-picker-header';
+import { ImagePickerModal } from './components/image-picker-modal';
+import { ImagePickerAvatar } from './components/image-picker-avatar';
 
 export default function App() {
-  const [response, setResponse] = useState(null);
+  const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
 
   const onImageLibraryPress = useCallback(() => {
@@ -16,7 +16,7 @@ export default function App() {
       mediaType: 'photo',
       includeBase64: false,
     };
-    ImagePicker.launchImageLibrary(options, setResponse);
+    ImagePicker.launchImageLibrary(options, setPickerResponse);
   }, []);
 
   const onCameraPress = React.useCallback(() => {
@@ -25,10 +25,10 @@ export default function App() {
       mediaType: 'photo',
       includeBase64: false,
     };
-    ImagePicker.launchCamera(options, setResponse);
+    ImagePicker.launchCamera(options, setPickerResponse);
   }, []);
 
-  const uri = response?.assets && response.assets[0].uri;
+  const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
 
   return (
     <View style={styles.screen}>

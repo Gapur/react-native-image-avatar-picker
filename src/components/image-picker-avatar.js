@@ -8,9 +8,9 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import {images} from '../../assets';
+import { images } from '../../assets';
 
-export function ImagePickerAvatar({uri, onPress}) {
+export function ImagePickerAvatar({ uri, onPress }) {
   return (
     <ImageBackground
       style={styles.imageBackground}
@@ -18,7 +18,7 @@ export function ImagePickerAvatar({uri, onPress}) {
       <View style={styles.avatar}>
         <Image
           style={styles.avatarImage}
-          source={uri ? {uri} : images.avatar}
+          source={uri ? { uri } : images.avatar}
         />
         <TouchableOpacity style={styles.addButton} onPress={onPress}>
           <Image style={styles.addButtonIcon} source={images.addButton} />
