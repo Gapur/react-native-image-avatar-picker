@@ -6,12 +6,13 @@ import {
   View,
   TouchableOpacity,
   Text,
+  ImageBackground,
 } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 
-import { images } from './assets';
+import {images} from './assets';
 
-function App() {
+export default function App() {
   const [response, setResponse] = React.useState(null);
 
   const onButtonPress = React.useCallback((type, options) => {
@@ -29,62 +30,20 @@ function App() {
           <Text style={styles.topBarTitleText}>Avatar Picker</Text>
         </View>
       </SafeAreaView>
-      <View style={styles.avatar}>
-        <Image style={styles.avatarImage} source={images.avatar} />
-        <TouchableOpacity style={styles.addButton}>
-          <Image style={styles.addButtonIcon} source={images.addButton} />
-        </TouchableOpacity>
-      </View>
+      <ImageBackground
+        style={styles.imageBackground}
+        source={images.whatsappBackground}>
+        <View style={styles.avatar}>
+          <Image style={styles.avatarImage} source={images.avatar} />
+          <TouchableOpacity style={styles.addButton}>
+            <Image style={styles.addButtonIcon} source={images.addButton} />
+          </TouchableOpacity>
+          <Text style={styles.usernameText}>Gapur Kassym</Text>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
-
-const actions = [
-  {
-    title: 'Take Image',
-    type: 'capture',
-    options: {
-      saveToPhotos: true,
-      mediaType: 'photo',
-      includeBase64: false,
-    },
-  },
-  {
-    title: 'Select Image',
-    type: 'library',
-    options: {
-      maxHeight: 200,
-      maxWidth: 200,
-      selectionLimit: 0,
-      mediaType: 'photo',
-      includeBase64: false,
-    },
-  },
-  {
-    title: 'Take Video',
-    type: 'capture',
-    options: {
-      saveToPhotos: true,
-      mediaType: 'video',
-    },
-  },
-  {
-    title: 'Select Video',
-    type: 'library',
-    options: {
-      selectionLimit: 0,
-      mediaType: 'video',
-    },
-  },
-  {
-    title: `Select Image or Video\n(mixed)`,
-    type: 'library',
-    options: {
-      selectionLimit: 0,
-      mediaType: 'mixed',
-    },
-  },
-];
 
 const styles = StyleSheet.create({
   screen: {
@@ -104,13 +63,20 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 20,
   },
+  imageBackground: {
+    flex: 1,
+  },
   avatar: {
     alignItems: 'center',
-    marginTop: '32%',
+    marginTop: '40%',
   },
   avatarImage: {
     height: 260,
     width: 260,
+    overflow: 'hidden',
+    borderColor: '#ffffff',
+    borderWidth: 4,
+    borderRadius: 260 / 2,
   },
   addButton: {
     height: 54,
@@ -119,12 +85,16 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     position: 'absolute',
     right: 104,
-    bottom: 16,
+    bottom: 40,
   },
   addButtonIcon: {
     height: 54,
     width: 54,
   },
+  usernameText: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#ffffff',
+    marginTop: 12,
+  },
 });
-
-export default App;
